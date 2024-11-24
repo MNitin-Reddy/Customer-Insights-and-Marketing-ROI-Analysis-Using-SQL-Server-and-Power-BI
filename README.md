@@ -14,13 +14,91 @@ The primary goal of this project is to:
 * Evaluate the impact of marketing channels on customer engagement.
 * Provide actionable insights for decision-making through data-driven analysis.
 
-## Data Sources
-The analysis uses the following datasets:
-* `accounts.csv`: Details about customer accounts, including geographic coordinates and primary points of contact.
-* `orders.csv`: Order details such as product quantities, amounts, and timestamps.
-* `region.csv`: Regional information tied to sales performance.
-* `sales_rep.csv`: Details of sales representatives, including their assigned regions.
-* `web_events.csv`: Customer interaction data from different marketing channels.
+## **Data Sources and Column Descriptions**
+
+<table>
+<tr>
+<td valign="top">
+
+#### **accounts.csv**  
+Contains details about customer accounts.  
+
+| **Column Name**   | **Description**                                    |
+|--------------------|----------------------------------------------------|
+| `id`              | Unique identifier for each account.                |
+| `name`            | Name of the customer account.                      |
+| `website`         | Website associated with the customer account.      |
+| `lat`             | Latitude of the customer’s location.               |
+| `long`            | Longitude of the customer’s location.              |
+| `primary_poc`     | Primary point of contact for the account.           |
+| `sales_rep_id`    | Identifier of the sales representative managing the account. |
+
+</td>
+<td>
+
+#### **orders.csv**  
+Details of orders placed by customers.  
+
+| **Column Name**         | **Description**                                    |
+|--------------------------|----------------------------------------------------|
+| `id`                    | Unique identifier for each order.                  |
+| `account_id`            | Identifier linking the order to a customer account.|
+| `occurred_at`           | Timestamp indicating when the order occurred.       |
+| `standard_qty`          | Quantity of standard items ordered.                |
+| `gloss_qty`             | Quantity of gloss items ordered.                   |
+| `poster_qty`            | Quantity of poster items ordered.                  |
+| `total`                 | Total quantity of items in the order.              |
+| `standard_amt_usd`      | Revenue generated from standard items (in USD).     |
+| `gloss_amt_usd`         | Revenue generated from gloss items (in USD).        |
+| `poster_amt_usd`        | Revenue generated from poster items (in USD).       |
+| `total_amt_usd`         | Total revenue generated from the order (in USD).    |
+
+</td>
+</tr>
+</table>
+
+---
+
+<table>
+<tr>
+<td>
+
+#### **region.csv**  
+Information about regions where sales representatives operate.  
+
+| **Column Name** | **Description**                          |
+|------------------|------------------------------------------|
+| `id`            | Unique identifier for each region.       |
+| `name`          | Name of the region.                      |
+
+</td>
+<td>
+
+#### **sales_rep.csv**  
+Details about sales representatives and their assigned regions.  
+
+| **Column Name** | **Description**                                   |
+|------------------|---------------------------------------------------|
+| `id`            | Unique identifier for each sales representative. |
+| `name`          | Name of the sales representative.                |
+| `region_id`     | Identifier linking the sales representative to a region. |
+
+</td>
+</tr>
+</table>
+
+---
+
+#### **web_events.csv**  
+Logs of customer interactions via various marketing channels.  
+
+| **Column Name** | **Description**                                       |
+|------------------|-------------------------------------------------------|
+| `id`            | Unique identifier for each web event.                |
+| `account_id`    | Identifier linking the web event to a customer account.|
+| `occurred_at`   | Timestamp indicating when the web event occurred.      |
+| `channel`       | Marketing channel where the interaction took place.   |
+
 
 ## Data Cleaning
 * **Null Value Checks:** Identify missing values in critical fields like sales_rep_id, account_id, occurred_at, etc., and decide on handling (e.g., imputation, exclusion).
