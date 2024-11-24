@@ -1,1 +1,1 @@
-# parch-posy-project
+# Parch & Posey SQL project
