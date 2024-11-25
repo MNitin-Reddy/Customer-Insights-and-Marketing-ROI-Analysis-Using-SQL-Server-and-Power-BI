@@ -129,19 +129,49 @@ SELECT * FROM orders WHERE gloss_qty IS NULL;
 SELECT * FROM orders WHERE poster_qty IS NULL;
 -- There is no pattern associated with null values
 
+UPDATE orders
+SET standard_qty = (SELECT AVG(CAST(standard_qty AS FLOAT)) FROM orders WHERE standard_qty IS NOT NULL)
+WHERE standard_qty IS NULL 
+
+UPDATE orders
+SET gloss_qty = (SELECT AVG(CAST(gloss_qty AS FLOAT)) FROM orders WHERE gloss_qty IS NOT NULL)
+WHERE gloss_qty IS NULL 
+
+UPDATE orders
+SET poster_qty = (SELECT AVG(CAST(poster_qty AS FLOAT)) FROM orders WHERE poster_qty IS NOT NULL)
+WHERE poster_qty IS NULL;
 
 
--- Are there any duplicates in the dataset?**
--- Are there duplicate rows that should be removed to ensure the integrity of the analysis?
+-- Are there any duplicates in the dataset?
 
--- Are there any outliers or anomalies in key columns?**
- -- Which values are outside the expected range (e.g., negative quantities or negative revenue)?
+SELECT COUNT(*) as duplicated
+FROM orders
+GROUP BY id, account_id, occurred_at, standard_qty, gloss_qty, poster_qty, total_amt_usd
+HAVING COUNT(*) > 1;
+-- None
 
--- Are there any inconsistencies in categorical variables (e.g., spelling errors, mixed case)?**
-  --  How will you standardize the text data in columns like `name` or `channel`?
+SELECT id, account_id, occurred_at, standard_qty, gloss_qty, poster_qty, total_amt_usd, COUNT(*) AS duplicate_count
+FROM orders
+GROUP BY id, account_id, occurred_at, standard_qty, gloss_qty, poster_qty, total_amt_usd
+HAVING COUNT(*) > 1;
+-- None
 
--- Are the data types for each column appropriate (e.g., date columns formatted as dates)?**
-  --  Do we need to convert columns like `occurred_at` to a proper datetime format?
+SELECT id, account_id, occurred_at, channel, COUNT(*) AS duplicate_count
+FROM web_events
+GROUP BY id, account_id, occurred_at, channel
+HAVING COUNT(*) > 1;
+-- None
 
--- What are the statistics for numeric columns (e.g., mean, standard deviation, min/max)?**
-  --  This will help identify any unexpected or inconsistent values.
+-- There are no duplicated records
+
+-- Are there any inconsistencies in categorical variables (e.g., spelling errors, mixed case)?
+SELECT DISTINCT name FROM accounts;
+-- All ok
+-- All tables categorical values are correct
+
+-- Are the data types for each column appropriate (e.g., date columns formatted as dates)?
+SELECT occurred_at
+FROM web_events
+WHERE ISDATE(occurred_at) = 0;
+-- Dates are in correct format
+
