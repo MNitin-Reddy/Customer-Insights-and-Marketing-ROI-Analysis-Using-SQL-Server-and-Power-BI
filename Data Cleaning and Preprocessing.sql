@@ -39,8 +39,98 @@ REFERENCES accounts (id);
 
 
 -- Are there any missing values in the dataset?
+-- Accounts table
+SELECT 
+    'id' AS ColumnName, COUNT(*) AS TotalRows, SUM(CASE WHEN id IS NULL THEN 1 ELSE 0 END) AS NullCount
+FROM accounts
+UNION ALL
+SELECT 'name', COUNT(*), SUM(CASE WHEN name IS NULL THEN 1 ELSE 0 END)
+FROM accounts
+UNION ALL
+SELECT 'website', COUNT(*), SUM(CASE WHEN website IS NULL THEN 1 ELSE 0 END)
+FROM accounts
+UNION ALL
+SELECT 'lat', COUNT(*), SUM(CASE WHEN lat IS NULL THEN 1 ELSE 0 END)
+FROM accounts
+UNION ALL
+SELECT 'long', COUNT(*), SUM(CASE WHEN long IS NULL THEN 1 ELSE 0 END)
+FROM accounts
+UNION ALL
+SELECT 'primary_poc', COUNT(*), SUM(CASE WHEN primary_poc IS NULL THEN 1 ELSE 0 END)
+FROM accounts
+UNION ALL
+SELECT 'sales_rep_id', COUNT(*), SUM(CASE WHEN sales_rep_id IS NULL THEN 1 ELSE 0 END)
+FROM accounts;
+-- Zero NUll count in all columns
 
-  
+-- Orders table
+SELECT 
+    'id' AS ColumnName, COUNT(*) AS TotalRows, SUM(CASE WHEN id IS NULL THEN 1 ELSE 0 END) AS NullCount
+FROM orders
+UNION ALL
+SELECT 'account_id', COUNT(*), SUM(CASE WHEN account_id IS NULL THEN 1 ELSE 0 END)
+FROM orders
+UNION ALL
+SELECT 'occurred_at', COUNT(*), SUM(CASE WHEN occurred_at IS NULL THEN 1 ELSE 0 END)
+FROM orders
+UNION ALL
+SELECT 'standard_qty', COUNT(*), SUM(CASE WHEN standard_qty IS NULL THEN 1 ELSE 0 END)
+FROM orders
+UNION ALL
+SELECT 'gloss_qty', COUNT(*), SUM(CASE WHEN gloss_qty IS NULL THEN 1 ELSE 0 END)
+FROM orders
+UNION ALL
+SELECT 'poster_qty', COUNT(*), SUM(CASE WHEN poster_qty IS NULL THEN 1 ELSE 0 END)
+FROM orders
+UNION ALL
+SELECT 'total_amt_usd', COUNT(*), SUM(CASE WHEN total_amt_usd IS NULL THEN 1 ELSE 0 END)
+FROM orders;
+SELECT * FROM orders WHERE standard_qty IS NULL;
+-- standard_qty -> 825 Null values
+-- gloss_qty -> 1018
+-- poster_qty -> 1149
+
+-- Region table
+SELECT * FROM region;
+-- No missing values in region
+
+-- Sales reps table
+SELECT * FROM sales_reps;
+-- NO missing values in sales_reps
+
+-- Web events table
+SELECT 
+    'id' AS ColumnName, COUNT(*) AS TotalRows, SUM(CASE WHEN id IS NULL THEN 1 ELSE 0 END) AS NullCount
+FROM web_events
+UNION ALL
+SELECT 'account_id', COUNT(*), SUM(CASE WHEN account_id IS NULL THEN 1 ELSE 0 END)
+FROM web_events
+UNION ALL
+SELECT 'occurred_at', COUNT(*), SUM(CASE WHEN occurred_at IS NULL THEN 1 ELSE 0 END)
+FROM web_events
+UNION ALL
+SELECT 'channel', COUNT(*), SUM(CASE WHEN channel IS NULL THEN 1 ELSE 0 END)
+FROM web_events;
+-- No missing values
+
+-- In orders table if all the three columns standard_qty, gloss_qty,  poster_qty are zero then it is 
+-- considered as there is no order made so we can replace them with zero
+UPDATE orders
+SET standard_qty = 0,
+    gloss_qty = 0,
+    poster_qty = 0
+WHERE standard_qty IS NULL 
+   AND gloss_qty IS NULL 
+   AND poster_qty IS NULL;
+-- only 20 rows affected
+
+SELECT * FROM orders WHERE standard_qty IS NULL;
+SELECT * FROM orders WHERE gloss_qty IS NULL;
+SELECT * FROM orders WHERE poster_qty IS NULL;
+-- There is no pattern associated with null values
+
+
+
 -- Are there any duplicates in the dataset?**
 -- Are there duplicate rows that should be removed to ensure the integrity of the analysis?
 
