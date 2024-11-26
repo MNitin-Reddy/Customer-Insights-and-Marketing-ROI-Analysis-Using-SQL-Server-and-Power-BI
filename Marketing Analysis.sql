@@ -102,3 +102,19 @@ FROM RetentionStats;
 --twitter	186	187	99.47	0.53
 --adwords	251	257	97.67	2.33
 --organic	246	249	98.8	1.2
+
+
+-- Which types of regions are more likely to be influenced by a specific marketing channel?
+SELECT r.name AS region,
+    w.channel AS marketing_channel,
+    COUNT(DISTINCT o.account_id) AS influenced_accounts
+FROM web_events w INNER JOIN orders o
+ON w.account_id = o.account_id
+INNER JOIN accounts a
+ON a.id = o.account_id
+INNER JOIN sales_reps s
+ON a.sales_rep_id = s.id
+INNER JOIN region r
+ON s.region_id = r.id
+GROUP BY r.name, w.channel
+ORDER BY region, influenced_accounts DESC;
