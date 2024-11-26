@@ -1,7 +1,7 @@
 
-## Data Cleaning and Preprocessing
+## 1. Data Cleaning and Preprocessing
 
-### Primary and Foreign Key Setup
+### 1.1 Primary and Foreign Key Setup
 
 We set primary keys for all tables and establish foreign key relationships to ensure data integrity.
 
@@ -45,7 +45,7 @@ ALTER TABLE web_events
 ADD CONSTRAINT FK_WebEvents_Accounts FOREIGN KEY (account_id)
 REFERENCES accounts (id);
 ```
-### Checking for Missing Values
+### 1.2 Checking for Missing Values
 We perform checks to identify any missing values in the dataset for each table.
 ##### Accounts Table
 ```sql
@@ -132,7 +132,7 @@ FROM web_events;
 **Insights:**
 * No missing values in the web_events table.
 
-### Handling Missing Data
+### 1.3 Handling Missing Data
 For the missing values in the orders table (i.e., standard_qty, gloss_qty, poster_qty), we decided to:
 * Replace rows where all three quantities are NULL with 0.
 * For other missing values, use the average of non-null values to replace the missing values.
@@ -161,7 +161,7 @@ UPDATE orders
 SET poster_qty = (SELECT AVG(CAST(poster_qty AS FLOAT)) FROM orders WHERE poster_qty IS NOT NULL)
 WHERE poster_qty IS NULL;
 ```
-### Checking for Duplicates
+### 1.4 Checking for Duplicates
 We perform checks to ensure there are no duplicate rows in the dataset.
 ##### Orders Table
 ```sql
@@ -192,7 +192,7 @@ SELECT DISTINCT name FROM accounts;
 **Insights:**
 * All categorical values in the accounts table are correct and consistent.
 
-### Checking for Correct Data Types
+### 1.5 Checking for Correct Data Types
 We ensure that the data types are appropriate for each column, especially date fields.
 ```sql
 SELECT occurred_at
@@ -204,9 +204,11 @@ WHERE ISDATE(occurred_at) = 0;
 
 This section covers the entire data cleaning process, including handling missing data, setting up keys, ensuring there are no duplicates, and verifying the consistency of the data. It is now ready for further analysis and reporting.
 
-## Customer Analysis
+--- 
 
-### 1. Key Customers by Region and Sales
+## 2. Customer Analysis
+
+### 2.1 Key Customers by Region and Sales
 What are the key customes from each region and the amount of sales brought by them?
 
 This query identifies key customers from each region and their total sales. We group the accounts by region and calculate the total sales for each area.
@@ -225,7 +227,7 @@ GROUP BY r.name;
 - **Southeast**: 2024 accounts, $6,458,497 total sales
 - **West**: 1634 accounts, $5,925,122.95 total sales
 
-### 2. Customer Base Diversity
+### 2.2 Customer Base Diversity
 How diverse is the customer base regarding the number of unique companies or industries?
 
 We analyze the diversity of the customer base by counting the number of unique companies or industries.
@@ -234,7 +236,7 @@ SELECT COUNT(DISTINCT name) FROM accounts;
 ```
 **Insights:**
 - There are 351 unique customer companies.
-### 3. Company Size and Sales Analysis
+### 2.3 Company Size and Sales Analysis
 We analyze total sales based on the size of the companies, categorizing them into small, medium, and large companies based on sales thresholds.
 ```sql
 SELECT a.name, SUM(o.total_amt_usd) as sales
@@ -272,7 +274,7 @@ GROUP BY (CASE WHEN sales < 100000 THEN 'Small'
     END);
 ```
 
-### 4. Primary Points of Contact for the Largest Orders
+### 2.4 Primary Points of Contact for the Largest Orders
 Who is the primary point of contact for the largest orders?
 
 This analysis identifies the primary point of contact (POC) for the accounts generating the highest sales.
@@ -297,7 +299,7 @@ ORDER BY total_sales DESC;
 | Julia Laracuente    | $278,575.64   |
 | Kristopher Moton    | $275,288.30   |
 
-### 5. Top-Tier Customers Based on Total Quantity Purchased
+### 2.5 Top-Tier Customers Based on Total Quantity Purchased
 Who are the top-tier customers based on the total quantity purchased?
 
 We identify the top customers based on the total quantity purchased (sum of standard_qty and poster_qty).
@@ -326,6 +328,8 @@ ORDER BY total_qty DESC;
 | American Family Insurance Group       | 29,404      |
 
 This section provides insights into customer analysis, including key customers by region, sales by company size, and identifying primary contacts for top sales. It highlights the diversity and sales volume within the customer base.
+
+---
 
 ## 3. Sales Performance
 
@@ -356,6 +360,7 @@ ORDER BY order_year;
 - 2017: $78.15K  
 
 #### Monthly Trends
+
 Revenue trends were analyzed by months across all years.
 ```sql
 SELECT DISTINCT MONTH(occurred_at) AS order_month, ROUND((SUM(total_amt_usd) OVER (PARTITION BY MONTH(occurred_at)))/1000,2) AS monthly_total_in_k$
@@ -373,11 +378,13 @@ ORDER BY order_month;
 - **Most sales occur at the end of the year**, with December being the peak month ($3,129.41K).  
 
 **Monthly Breakdown:**
+
 - January: $1,337.66K  
 - February: $1,312.62K  
 - ...  
 - November: $2,390.03K  
-- December: $3,129.41K  
+- December: $3,129.41K
+
 ### 3.2 Revenue Contribution by Product Types
 Which product types (e.g., standard, gloss, poster) are contributing the most to revenue?
 ```sql
@@ -387,6 +394,7 @@ SELECT ROUND(SUM(standard_amt_usd)/1000000,2) AS revenue_standard_M$,
 FROM orders;
 ```
 **Insights:**
+
 Standard products contribute the most to revenue:  
 - **Standard**: $9.67M  
 - **Gloss**: $7.59M  
@@ -414,6 +422,7 @@ FROM AccountOrderStats
 ORDER BY order_count DESC;  
 ```
 **Insights:**
+
 - **Top customers based on order count:**
   - Leucadia National: 71 orders, 1,090 days between first and last orders  
   - Sysco: 68 orders, 1,090 days  
@@ -433,6 +442,7 @@ GROUP BY a.name
 ORDER BY total_revenue_k$ DESC;  
 ```
 **Insights:**
+
 - **Top 10 accounts contributing to revenue:**  
   - EOG Resources: $382.87K  
   - Mosaic: $345.62K  
@@ -446,9 +456,9 @@ ORDER BY total_revenue_k$ DESC;
   - Archer Daniels Midland: $272.67K
 ---
 
-### 4. Marketing Effectiveness Analysis
+## 4. Marketing Effectiveness Analysis
 
-#### 4.1 Customer Interactions by Marketing Channel
+### 4.1 Customer Interactions by Marketing Channel
 Which marketing channels are generating the most customer interactions?
 ```sql
 SELECT DISTINCT channel,   
@@ -458,6 +468,7 @@ ORDER BY 'No. of Interactions' DESC;
 ```
 
 **Insights:**
+
 - **Top channels by interactions:**
   - Direct: 5,298  
   - Facebook: 967  
@@ -466,7 +477,7 @@ ORDER BY 'No. of Interactions' DESC;
   - Banner: 476  
   - Twitter: 474  
 
-#### 4.2 Conversion Rate from Marketing Touchpoints
+### 4.2 Conversion Rate from Marketing Touchpoints
 
 What is the conversion rate from marketing touchpoints (e.g., how many web events lead to actual orders)?
 ```sql
@@ -485,11 +496,12 @@ SELECT
     (SELECT COUNT(*) FROM WebEventAccounts) * 100 AS conversion_rate;  
 ```
 **Results:**
+
 - **Accounts with Orders**: 350  
 - **Accounts with Web Events**: 351  
 - **Conversion Rate**: 99.7%  
 
-#### 4.3 Average Order Size by Marketing Channel
+### 4.3 Average Order Size by Marketing Channel
  What is the average order size by marketing channel?
  
 This query calculates the average order size based on the marketing channel:
@@ -502,6 +514,7 @@ GROUP BY w.channel
 ORDER BY avg_order_size DESC;  
 ```
 **Insights:**
+
 - **Top channels by average order size:**
   - Adwords: 529  
   - Direct: 526  
@@ -510,9 +523,10 @@ ORDER BY avg_order_size DESC;
   - Organic: 517  
   - Banner: 508  
 
-#### 4.4 Time to First Order After Contact
+### 4.4 Time to First Order After Contact
+
 How quickly do customers place their first order after being contacted?
-```
+```sql
 WITH FirstOrder AS (  
     SELECT w.account_id,  
         w.channel AS marketing_channel,  
@@ -529,6 +543,7 @@ GROUP BY marketing_channel
 ORDER BY avg_days_to_first_order;  
 ```
 **Results:**
+
 - **Channels by days to first order:**
   - Direct: 0 days  
   - Facebook: 59 days  
@@ -537,9 +552,11 @@ ORDER BY avg_days_to_first_order;
   - Banner: 125 days  
   - Twitter: 131 days  
 
-#### 4.5 Retention and Churn Rates by Marketing Channel
+### 4.5 Retention and Churn Rates by Marketing Channel
  What is the retention or churn rate for customers contacted via marketing channels?
-ey Metrics:
+ 
+Key Metrics:
+
 * Retention Rate (%) = (Number of Customers with Multiple Orders / Total Customers with Orders) × 100
 * Churn Rate (%) = 100 -Retention Rate(%)
 This query calculates retention and churn rates based on marketing channels:
@@ -567,6 +584,7 @@ SELECT marketing_channel,
 FROM RetentionStats;  
 ```
 **Results:**
+
 - **Retention and churn rates:**
   - Banner: Retention: 98%, Churn: 2%  
   - Facebook: Retention: 96.98%, Churn: 3.02%  
@@ -575,7 +593,8 @@ FROM RetentionStats;
   - Adwords: Retention: 97.67%, Churn: 2.33%  
   - Organic: Retention: 98.8%, Churn: 1.2%  
 
-#### 4.6 Region-wise Influence of Marketing Channels
+### 4.6 Region-wise Influence of Marketing Channels
+
  Which types of regions are more likely to be influenced by a specific marketing channel?
 ```sql
 SELECT r.name AS region,  
@@ -593,6 +612,7 @@ GROUP BY r.name, w.channel
 ORDER BY region, influenced_accounts DESC;
 ``` 
 ##### Insights from the Region-wise Influence of Marketing Channels:
+
 - **Midwest:**  
   The most effective marketing channel is Direct, with 48 influenced accounts.
 - **Northeast:**  
@@ -601,12 +621,14 @@ ORDER BY region, influenced_accounts DESC;
   The most effective marketing channel is Direct, with 96 influenced accounts.
 - **West:**  
   The most effective marketing channel is Direct, with 101 influenced accounts.
+  
 **Summary:**  
+
 Direct is the most influential marketing channel across all regions, with the highest number of influenced accounts in each.
+---
+## 5. Geographic Insights
 
-### 5. Geographic Insights
-
-#### 5.1 Where are the highest-revenue-generating customers located?
+### 5.1 Where are the highest-revenue-generating customers located?
 ```sql
 SELECT DISTINCT r.name,
     ROUND((SUM(total_amt_usd) OVER (PARTITION BY r.name))/1000000,2) AS revenue_M$
@@ -619,6 +641,7 @@ ON a.id = o.account_id
 ORDER BY revenue_M$ DESC;
 ```
 **Results:**
+
 | Region    | Revenue (in million $) |
 |-----------|------------------------|
 | Northeast | 7.74                   |
@@ -627,9 +650,10 @@ ORDER BY revenue_M$ DESC;
 | Midwest   | 3.01                   |
 
 **Insight:**
-The Northeast region generates the highest revenue, significantly outperforming the Midwest, which contributes the least.
 
-#### 5.2 What is the geographic distribution of customer orders (e.g., are certain regions more active than others)? What product types are more preferred based on the region?
+* The Northeast region generates the highest revenue, significantly outperforming the Midwest, which contributes the least.
+
+### 5.2 What is the geographic distribution of customer orders (e.g., are certain regions more active than others)? What product types are more preferred based on the region?
 ```sql
 SELECT DISTINCT r.name,
     SUM(standard_qty) OVER (PARTITION BY r.name) as standard_orders_qty,
@@ -644,6 +668,7 @@ ON a.id = o.account_id
 ORDER BY total_orders DESC;
 ```
 **Results:**
+
 | Region    | Standard Orders Quantity | Poster Orders Quantity | Total Orders |
 |-----------|--------------------------|-------------------------|--------------|
 | Northeast | 737,533                  | 280,078                 | 1,230,378    |
@@ -652,9 +677,10 @@ ORDER BY total_orders DESC;
 | Midwest   | 294,886                  | 102,502                 | 482,850      |
 
 **Insight:**
-The Northeast region has the highest total order count, followed by the Southeast, with the Midwest having the lowest total orders. Standard products are generally preferred across all regions.
 
-#### 5.3 How does customer retention vary by location?
+* The Northeast region has the highest total order count, followed by the Southeast, with the Midwest having the lowest total orders. Standard products are generally preferred across all regions.
+
+### 5.3 How does customer retention vary by location?
 ```sql
 WITH CustomerOrders AS (
     SELECT a.id AS account_id,
@@ -681,6 +707,7 @@ SELECT region,
 FROM RetentionStats;
 ```
 **Results:**
+
 | Region    | Retained Customers | Total Customers | Retention Rate (%) |
 |-----------|--------------------|-----------------|--------------------|
 | Midwest   | 48                 | 48              | 100%               |
@@ -689,9 +716,10 @@ FROM RetentionStats;
 | West      | 95                 | 101             | 94.06%             |
 
 **Insight:**
-The Midwest has perfect retention (100%), indicating high customer satisfaction and repeat purchases. The Northeast region shows slightly lower retention but is still strong. The West and Southeast have similar retention rates, around 94-95%.
 
-#### 5.4 How has the revenue grown from each region over the years?
+* The Midwest has perfect retention (100%), indicating high customer satisfaction and repeat purchases. The Northeast region shows slightly lower retention but is still strong. The West and Southeast have similar retention rates, around 94-95%.
+
+### 5.4 How has the revenue grown from each region over the years?
 ```sql
 SELECT DISTINCT YEAR(occurred_at) FROM orders;
 -- 2013 - 2017
@@ -723,7 +751,63 @@ PIVOT (
 | West      | 57K   | 860K  | 1.38M | 3.61M | 24K   |
 
 **Insight:**
-Northeast and Southeast show strong revenue growth in 2015 and 2016. The West region has steady growth, but there’s a slight dip in 2017. The Midwest saw the most significant jump in revenue from 2015 to 2016, but data for 2017 is unavailable.
+* Northeast and Southeast show strong revenue growth in 2015 and 2016. The West region has steady growth, but there’s a slight dip in 2017. The Midwest saw the most significant jump in revenue from 2015 to 2016, but data for 2017 is unavailable.
+
+
+## Conclusion and Final Analysis
+
+The analysis of the company's ```marketing effectiveness```, ```geographic distribution```, ```customer interactions```, ```sales performance```, and ```revenue trends``` across different regions provides a comprehensive overview of how each region and marketing channel is performing.
+
+### 1. Marketing Effectiveness
+
+**Top Performing Channels:**
+- Direct marketing leads across all regions in customer interactions, order sizes, and rapid conversion to first orders. It is the most effective touchpoint, contributing significantly to both interactions and revenue.
+- Other channels such as Facebook, Adwords, and Organic have strong performances in certain regions but are not as universally impactful as Direct.
+
+**Key Insight:** The Direct channel is the most effective in terms of customer engagement and conversion. Increasing investments or improving strategies for other channels like Facebook and Adwords may help capture a larger share of the market.
+
+### 2. Customer Behavior and Retention
+**Customer Conversion & Retention Rates:**
+- Conversion rates from marketing touchpoints are very high, with 99.7% of customers making an order after interacting with a marketing touchpoint. The Twitter and Facebook channels, while effective for initial engagement, show a longer time to first order.
+- Retention Rates are strong across regions, particularly in the Midwest with a perfect retention rate of 100%. However, regions like the Northeast, Southeast, and West show slightly lower retention rates (92%–94%).
+
+**Key Insight:** Retention is a key factor driving long-term business success, particularly in regions like the Midwest, where perfect retention suggests high customer satisfaction. Strategies to increase retention, such as personalized offerings and loyalty programs, could yield significant long-term benefits.
+
+### 3. Geographic Insights and Revenue
+
+**Top Revenue-Generating Regions:**
+- The Northeast leads in total revenue generation, followed by the Southeast and West. The Midwest region, while not a top performer in terms of revenue, shows steady growth and high retention.
+
+**Key Insight:** Focus on scaling marketing efforts in the Midwest, which shows high potential for growth in both orders and customer retention. The Northeast and Southeast should continue to be high-priority markets due to their strong revenue generation.
+
+### 4. Sales Performance by Region
+
+**Order Distribution:**
+- The Northeast is the highest in terms of total orders, with a significant contribution from standard orders and poster orders.
+- The Midwest has the lowest number of total orders but excels in customer retention, which may indicate strong loyalty among a smaller customer base.
+
+**Key Insight:** Enhancing product offerings in the Midwest could boost order volume, while in the Northeast, focusing on expanding the variety of products (especially poster orders) could capitalize on high order frequency.
+
+### 5. Revenue Growth Trends
+
+**Revenue Growth Over Time:**
+- The Northeast and Southeast saw strong revenue growth from 2014 to 2016 but experienced a dip in 2017. The Midwest showed strong growth in 2016, while the West maintained steady growth with some fluctuations.
+
+**Key Insight:** The Midwest’s growth in 2016 could provide useful insights into successful strategies that can be replicated in other regions. The dip in 2017 across certain regions warrants a deeper investigation into the factors contributing to this drop, whether it’s market trends, product issues, or external economic factors.
+
+---
+
+## Final Recommendations
+
+1. **Leverage Direct Marketing:** Given its dominant performance across all regions, increase focus on the Direct channel while optimizing Facebook, Adwords, and Organic strategies to capture a wider audience and improve conversion rates.
+
+2. **Focus on Customer Retention:** Especially in regions like the Northeast and West, retention strategies should be improved to match the Midwest’s performance. This could include enhancing customer service, loyalty programs, or introducing incentives for repeat orders.
+
+3. **Capitalize on Regional Strengths:** The Northeast and Southeast remain the top regions for revenue generation, while the Midwest offers high potential for growth and strong customer loyalty. Tailor strategies to maintain high retention in the Midwest and expand market share in the Northeast and Southeast.
+
+4. **Targeted Product Expansion:** The Northeast region benefits from a high number of poster orders. Tailoring product offerings based on regional preferences could increase order volumes and revenue. Similarly, improving order volumes in the Midwest through targeted campaigns could unlock additional revenue streams.
+
+5. **Investigate Revenue Declines:** The drop in revenue in 2017 should be investigated thoroughly to understand the reasons behind it, whether it’s external factors like economic downturns or internal issues such as product quality or pricing changes.
 
 
 
