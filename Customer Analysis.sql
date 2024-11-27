@@ -54,12 +54,21 @@ GROUP BY (CASE WHEN sales < 100000 THEN 'Small'
 
 -- 4. Who is the primary point of contact for the largest orders?
  -- Which accounts are generating the most revenue (in terms total spend)?
- SELECT TOP 10 primary_poc, ROUND(SUM(total_amt_usd),2) AS total_sales
+SELECT TOP 10 primary_poc, ROUND(SUM(total_amt_usd),2) AS total_sales
 FROM accounts a
 JOIN orders o ON a.id = o.account_id
 GROUP BY primary_poc
 ORDER BY total_sales DESC;
-
+--Alida Desrosier	382873.3
+--Tamara Tuma	365726.12
+--Lorette Blasi	345618.59
+--Denis Gros	326819.48
+--Erin Viverette	300694.79
+--Gail Widmer	293861.14
+--Merrill Rubino	291047.25
+--Craig Mcalpine	281018.36
+--Julia Laracuente	278575.64
+--Kristopher Moton	275288.3
 
 -- 5. Who are the top-tier customers based on total quantity purchased?
 SELECT a.name, SUM (o.standard_qty + o.poster_qty )as total_qty 
@@ -71,6 +80,17 @@ JOIN orders o ON a.id = o.account_id
 GROUP BY a.name
 order BY total_qty DESC;
 
+-- These are top 10
+--Core-Mark Holding	46616
+--DISH Network	43149
+--Mosaic	34889
+--Pacific Life	34021
+--IBM	33023
+--Citigroup	32060
+--Thermo Fisher Scientific	31676
+--Republic Services	31364
+--ADP	29859
+--American Family Insurance Group	29404
 
 
 
