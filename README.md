@@ -100,6 +100,8 @@ Logs of customer interactions via various marketing channels.
 | `channel`       | Marketing channel where the interaction took place.   |
 
 
+![P&P](https://github.com/MNitin-Reddy/parch-posy-project/blob/main/Database%20ERD.png)
+
 
 ## Data Cleaning
 * **Null Value Checks:** Identify missing values in critical fields like sales_rep_id, account_id, occurred_at, etc., and decide on handling (e.g., imputation, exclusion).
