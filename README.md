@@ -1,4 +1,4 @@
-# Parch & Posey SQL project
+# Customer Insights and Marketing ROI Analysis Using SQL Server and Power BI
 
 ## Problem Statement
 Parch & Posey, a growing B2B paper goods company, faces challenges in optimizing its business operations amidst increasing competition. The company does not clearly understand how its sales efforts, marketing channels, and regional performance impact overall profitability. With vast amounts of untapped data on customer accounts, orders, and web interactions, there is a pressing need to analyze this information to:
@@ -99,6 +99,8 @@ Logs of customer interactions via various marketing channels.
 | `occurred_at`   | Timestamp indicating when the web event occurred.      |
 | `channel`       | Marketing channel where the interaction took place.   |
 
+
+![P&P](https://github.com/MNitin-Reddy/parch-posy-project/blob/main/Database%20ERD.png)
 
 
 ## Data Cleaning
