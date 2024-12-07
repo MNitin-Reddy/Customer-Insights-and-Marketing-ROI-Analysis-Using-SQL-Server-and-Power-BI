@@ -219,3 +219,64 @@ ORDER BY total_order_value DESC;
 ```
 **Insight:** 
 * This query helps identify the highest-value orders, which can be useful for focusing on key accounts or products that contribute to higher revenue.
+
+## PowerBI Report
+![Dashboard1](Report%20Images/Sales%20Summary%20Report.png)
+![Dashboard1](Report%20Images/Regional%20Performance%20Report.png)
+![Dashboard1](Report%20Images/Marketing%20Performance%20Report.png)
+
+## Conclusion and Final Analysis
+
+The analysis of the company's ```marketing effectiveness```, ```geographic distribution```, ```customer interactions```, ```sales performance```, and ```revenue trends``` across different regions provides a comprehensive overview of how each region and marketing channel is performing.
+
+### 1. Marketing Effectiveness
+
+**Top Performing Channels:**
+- Direct marketing leads in customer interactions, order sizes, and rapid conversion to first orders across all regions. It is the most effective touchpoint, contributing significantly to both interactions and revenue.
+Other channels, such as Facebook, Adwords, and Organic, perform strongly in certain regions but are not as universally impactful as Direct.
+
+**Key Insight:** The Direct channel is the most effective in terms of customer engagement and conversion. Increasing investments or improving strategies for other channels like Facebook and Adwords may help capture a larger market share.
+
+### 2. Customer Behavior and Retention
+**Customer Conversion & Retention Rates:**
+- Conversion rates from marketing touchpoints are very high, with 99.7% of customers making an order after interacting with a marketing touchpoint. The Twitter and Facebook channels, while effective for initial engagement, show a longer time to first order.
+- Retention Rates are strong across regions, particularly in the Midwest with a perfect retention rate of 100%. However, regions like the Northeast, Southeast, and West show slightly lower retention rates (92%–94%).
+
+**Key Insight:** Retention is a key factor driving long-term business success, particularly in regions like the Midwest, where perfect retention suggests high customer satisfaction. Strategies to increase retention, such as personalized offerings and loyalty programs, could yield significant long-term benefits.
+
+### 3. Geographic Insights and Revenue
+
+**Top Revenue-Generating Regions:**
+- The Northeast leads in total revenue generation, followed by the Southeast and West. The Midwest region, while not a top performer in terms of revenue, shows steady growth and high retention.
+
+**Key Insight:** Focus on scaling marketing efforts in the Midwest, which shows high potential for growth in both orders and customer retention. The Northeast and Southeast should continue to be high-priority markets due to their strong revenue generation.
+
+### 4. Sales Performance by Region
+
+**Order Distribution:**
+- The Northeast is the highest in terms of total orders, with a significant contribution from standard orders and poster orders.
+- The Midwest has the lowest number of total orders but excels in customer retention, which may indicate strong loyalty among a smaller customer base.
+
+**Key Insight:** Enhancing product offerings in the Midwest could boost order volume, while in the Northeast, focusing on expanding the variety of products (especially poster orders) could capitalize on high order frequency.
+
+### 5. Revenue Growth Trends
+
+**Revenue Growth Over Time:**
+- The Northeast and Southeast saw strong revenue growth from 2014 to 2016 but experienced a dip in 2017. The Midwest showed strong growth in 2016, while the West maintained steady growth with some fluctuations.
+
+**Key Insight:** The Midwest’s growth in 2016 could provide useful insights into successful strategies that can be replicated in other regions. The dip in 2017 across certain regions warrants a deeper investigation into the factors contributing to this drop, whether it’s market trends, product issues, or external economic factors.
+
+---
+
+## Final Recommendations
+
+1. **Leverage Direct Marketing:** Given its dominant performance across all regions, increase focus on the Direct channel while optimizing Facebook, Adwords, and Organic strategies to capture a wider audience and improve conversion rates.
+
+2. **Focus on Customer Retention:** Especially in regions like the Northeast and West, retention strategies should be improved to match the Midwest’s performance. This could include enhancing customer service, loyalty programs, or introducing incentives for repeat orders.
+
+3. **Capitalize on Regional Strengths:** The Northeast and Southeast remain the top regions for revenue generation, while the Midwest offers high potential for growth and strong customer loyalty. Tailor strategies to maintain high retention in the Midwest and expand market share in the Northeast and Southeast.
+
+4. **Targeted Product Expansion:** The Northeast region benefits from a high number of poster orders. Tailoring product offerings based on regional preferences could increase order volumes and revenue. Similarly, improving order volumes in the Midwest through targeted campaigns could unlock additional revenue streams.
+
+5. **Investigate Revenue Declines:** The drop in revenue in 2017 should be investigated thoroughly to understand the reasons behind it, whether it’s external factors like economic downturns or internal issues such as product quality or pricing changes.
+
